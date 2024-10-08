@@ -33,3 +33,57 @@ Implémenter des variables d'environnement pour la configuration
 Configurer Nginx comme reverse proxy avec HTTPS
 Mettre en place des règles de sécurité pour la base de données
 Implémenter des bonnes pratiques de sécurité Docker
+
+
+## Structure du projet
+
+```sh
+C:.
+│   .env
+│   .gitignore
+│   docker-compose.prod.yml
+│   docker-compose.yml
+│   README.md
+│
+├───app
+│   └───wordpress
+│       └───wp-content
+│           ├───plugins
+│           └───themes
+├───config
+│   ├───mysql
+│   │       my.cnf
+│   │
+│   └───wordpress
+│           wp-config.php
+│
+├───docker
+│   ├───mysql
+│   │       Dockerfile.mysql
+│   │
+│   ├───ngnix
+│   │       Dockerfile.ngnix
+│   │
+│   └───wordpress
+│           Dockerfile.wordpress
+│
+├───docs
+│       infrastructure-diagram.png
+│
+├───grapfana
+│   ├───dashboards
+│   │       wordpress-dashboard.json
+│   │
+│   └───datasources
+│           prometheus.yml
+│
+├───prometheus
+│       prometheus.yml
+│
+└───scripts
+        deploy.sh
+        init-db.sh
+```
+
+### Dossiers
+
