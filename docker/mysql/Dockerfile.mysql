@@ -1,1 +1,25 @@
+# Utilisation de l'image de base "mysql:latest"
 FROM mysql:latest
+
+# Définition des variables d'environnement pour la configuration de MySQL
+ENV MYSQL_DATABASE=wordpress \
+    MYSQL_USER=wp_user \
+    MYSQL_PASSWORD=w0rdpr3$$ \
+    MYSQL_ROOT_PASSWORD=Pa$$w0rd
+
+# Copie du fichier de config MySQL depuis le répertoire local "config/mysql/my.cnf" vers le répertoire "/etc/mysql/my.cnf" dans le conteneur
+COPY config/mysql/my.cnf /etc/mysql/my.cnf
+
+# Vérification que le répertoire de données de MySQL existe et a les permissions correctes
+RUN mkdir -p /var/lib/mysql && \
+    chown -R mysql:mysql /var/lib/mysql
+
+# Exposition du port MySQL (port 3306)
+EXPOSE 3306
+
+# Utilisation d'une vérification de santé pour s'assurer que le serveur MySQL est en cours d'exécution
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD mysqladmin ping -h localhost -u root -p${MYSQL_ROOT_PASSWORD} || exit 1
+
+# Lancement du serveur MySQL
+CMD ["mysqld"]

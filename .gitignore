@@ -4,6 +4,8 @@
 .vagrant*
 bin
 docker/docker
+docker/bin
+docker/config
 .*.swp
 a.out
 *.orig
@@ -24,3 +26,4 @@ vendor/pkg/
 pyenv
 Vagrantfile
 test/
+.env
