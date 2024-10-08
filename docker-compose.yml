@@ -31,7 +31,6 @@ services:
     image: nginx:latest
     ports:
       - "80:80"
-      - "443:443"
     volumes:
       - wordpress_data:/usr/share/nginx/html
     depends_on:
