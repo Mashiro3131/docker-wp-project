@@ -87,3 +87,44 @@ C:.
 
 ### Dossiers
 
+- `app/wordpress`: Contient les fichiers de l'application Wordpress
+
+- `config/mysql`: Contient la configuration de la base de données MySQL
+
+- `config/wordpress`: Contient la configuration de l'application Wordpress
+
+- `docker/mysql`: Contient le Dockerfile pour la base de données MySQL
+
+- `docker/nginx`: Contient le Dockerfile pour le serveur web Nginx
+
+- `docker/wordpress`: Contient le Dockerfile pour l'application Wordpress
+
+- `docs`: Contient le diagramme d'infrastructure du projet
+
+- `grafana/dashboards`: Contient le tableau de bord Grafana pour Wordpress
+
+- `grafana/datasources`: Contient la configuration de Prometheus pour Grafana
+  
+- `prometheus`: Contient la configuration de Prometheus pour la surveillance
+  
+- `scripts`: Contient les scripts Bash pour le déploiement et l'initialisation de la base de données
+
+### Fichiers
+
+- `.env`: Fichier de configuration pour les variables d'environnement
+- `docker-compose.yml`: Fichier de configuration pour le développement
+- `docker-compose.prod.yml`: Fichier de configuration pour la production
+- `README.md`: Fichier de documentation du projet
+- `deploy.sh`: Script Bash pour le déploiement de l'infrastructure
+- `init-db.sh`: Script Bash pour l'initialisation de la base de données
+- `prometheus.yml`: Fichier de configuration de Prometheus
+- `my.cnf`: Fichier de configuration de MySQL
+- `wp-config.php`: Fichier de configuration de Wordpress
+- `Dockerfile.mysql`: Dockerfile pour la base de données MySQL
+- `Dockerfile.ngnix`: Dockerfile pour le serveur web Nginx
+- `Dockerfile.wordpress`: Dockerfile pour l'application Wordpress
+- `infrastructure-diagram.png`: Diagramme d'infrastructure du projet
+- `wordpress-dashboard.json`: Tableau de bord Grafana pour Wordpress
+- `prometheus.yml`: Configuration de Prometheus pour Grafana
+- `.gitignore`: Fichier de configuration pour Git
+- `readme.md`: Fichier de documentation du projet
