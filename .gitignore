@@ -28,3 +28,4 @@ Vagrantfile
 test/
 .env
 profile.d/
+opt/
