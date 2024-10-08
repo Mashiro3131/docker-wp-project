@@ -27,3 +27,4 @@ pyenv
 Vagrantfile
 test/
 .env
+profile.d/
