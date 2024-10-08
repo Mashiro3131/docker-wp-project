@@ -4,8 +4,8 @@ FROM mysql:latest
 # Définition des variables d'environnement pour la configuration de MySQL
 ENV MYSQL_DATABASE=wordpress \
     MYSQL_USER=wp_user \
-    MYSQL_PASSWORD=wp_password \
-    MYSQL_ROOT_PASSWORD=root_password
+    MYSQL_PASSWORD=w0rdpr3$$ \
+    MYSQL_ROOT_PASSWORD=Pa$$w0rd
 
 # Copie du fichier de config MySQL depuis le répertoire local "config/mysql/my.cnf" vers le répertoire "/etc/mysql/my.cnf" dans le conteneur
 COPY config/mysql/my.cnf /etc/mysql/my.cnf
