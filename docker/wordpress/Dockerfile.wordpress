@@ -1,2 +1,25 @@
+# Utilise l'image officielle WordPress
 FROM wordpress:latest
 
+# Set environment variables for WordPress configuration
+ENV WORDPRESS_DB_HOST=mysql:3306 \
+    WORDPRESS_DB_USER=wp_user \
+    WORDPRESS_DB_PASSWORD=w0rdpr3$$ \
+    WORDPRESS_DB_NAME=wordpress
+
+# Copy custom WordPress configuration file
+COPY config/wordpress/wp-config.php /var/www/html/wp-config.php
+
+# Ensure the WordPress content directory has the correct permissions
+RUN chown -R www-data:www-data /var/www/html/wp-content && \
+    chmod -R 755 /var/www/html/wp-content
+
+# Expose the WordPress port
+EXPOSE 80
+
+# Use a health check to ensure the WordPress server is up and running
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD curl -f http://localhost/wp-admin/install.php || exit 1
+
+# Run the WordPress server
+CMD ["nginx", "-g", "daemon off;"]
