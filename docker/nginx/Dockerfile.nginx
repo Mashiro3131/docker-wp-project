@@ -1,0 +1,22 @@
+# Start from the latest NGINX image
+FROM nginx:latest
+
+# Copy the custom NGINX configuration
+COPY config/nginx/nginx.conf /etc/nginx/nginx.conf
+
+# Copy static website files (if any) into NGINX public directory
+COPY html/ /usr/share/nginx/html/
+
+# Set permissions
+RUN chmod -R 755 /etc/nginx && \
+    chmod -R 755 /usr/share/nginx/html
+
+# Expose port 80 for NGINX
+EXPOSE 80
+
+# Healthcheck for NGINX
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD curl -f http://localhost/ || exit 1
+
+# Run NGINX in the foreground
+CMD ["nginx", "-g", "daemon off;"]
