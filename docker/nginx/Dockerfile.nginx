@@ -1,43 +1,20 @@
-# # Start from the latest NGINX image
-# FROM nginx:latest
+# Utilisation de l'image NGINX légère basée sur Alpine
+FROM nginx:alpine
 
-# # Copy the custom NGINX configuration
-# COPY config/nginx/nginx.conf /etc/nginx/nginx.conf
-
-# # Copy static website files (if any) into NGINX public directory
-# COPY html/ /usr/share/nginx/html/
-
-# # Set permissions
-# RUN chmod -R 755 /etc/nginx && \
-#     chown -R nginx:nginx /usr/share/nginx/html
-
-# # Expose port 80 for NGINX
-# EXPOSE 80
-
-# # Healthcheck for NGINX
-# HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
-#     CMD curl -f http://localhost/ || exit 1
-
-# # Run NGINX in the foreground
-# CMD ["nginx", "-g", "daemon off;"]
-
-
-# Utilisation de l'image NGINX officielle
-FROM nginx:latest
-
-# Copie de la configuration NGINX personnalisée
+# Copie la configuration NGINX personnalisée
 COPY app/nginx/default.conf /etc/nginx/conf.d/default.conf
 
-# Définition des permissions
+# Définition des permissions et nettoyage
 RUN chmod -R 755 /etc/nginx && \
-    chown -R nginx:nginx /usr/share/nginx/html
+    chown -R nginx:nginx /usr/share/nginx/html && \
+    rm -rf /var/cache/apk/*
 
-# Expose le port 80 pour NGINX
+# Expose le port 80 pour le serveur NGINX
 EXPOSE 80
 
-# # Healthcheck for NGINX
-# HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
-#     CMD curl -f http://localhost/ || exit 1
+# Healthcheck pour vérifier que NGINX fonctionne correctement
+HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
+    CMD curl -f http://localhost/ || exit 1
 
-# Commande pour démarrer NGINX en premier plan
+# Lancer NGINX en mode non-détaché
 CMD ["nginx", "-g", "daemon off;"]

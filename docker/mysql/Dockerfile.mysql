@@ -1,26 +1,26 @@
-# Démarre à partir de l'image MySQL la plus récente
-FROM mysql:latest
+# Démarre avec une version spécifique de MySQL
+FROM mysql:9.0
 
-# Définit les variables d'environnement pour l'initialisation de la base de données
+# Définition des variables d'environnement pour l'initialisation de la base de données
 ENV MYSQL_DATABASE=wordpress \
     MYSQL_USER=wp_user \
     MYSQL_PASSWORD=w0rdpr3$$ \
     MYSQL_ROOT_PASSWORD=root
 
-# Copie la configuration MySQL personnalisée (facultatif)
+# Copie la configuration MySQL personnalisée
 COPY config/mysql/my.cnf /etc/mysql/my.cnf
 
-# Assurez-vous que le répertoire de données MySQL existe et a les permissions appropriées
+# Assure que le répertoire de données MySQL existe avec les permissions appropriées
 RUN mkdir -p /var/lib/mysql && \
     chown -R mysql:mysql /var/lib/mysql && \
     chown -R mysql:mysql /etc/mysql
 
-# Expose le port MySQL
+# Expose le port MySQL pour les connexions
 EXPOSE 3306
 
-# Vérification de l'état de santé de MySQL
+# Healthcheck pour MySQL : vérifie la disponibilité du serveur
 HEALTHCHECK --interval=30s --timeout=10s --start-period=30s --retries=3 \
     CMD mysqladmin ping -h localhost -u root -p${MYSQL_ROOT_PASSWORD} || exit 1
 
-# Exécute le serveur MySQL
+# Lance le serveur MySQL
 CMD ["mysqld"]
