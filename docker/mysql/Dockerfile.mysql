@@ -5,14 +5,15 @@ FROM mysql:latest
 ENV MYSQL_DATABASE=wordpress \
     MYSQL_USER=wp_user \
     MYSQL_PASSWORD=w0rdpr3$$ \
-    MYSQL_ROOT_PASSWORD=Pa$$w0rd
+    MYSQL_ROOT_PASSWORD=root
 
 # Copie la configuration MySQL personnalisée (facultatif)
 COPY config/mysql/my.cnf /etc/mysql/my.cnf
 
 # Assurez-vous que le répertoire de données MySQL existe et a les permissions appropriées
 RUN mkdir -p /var/lib/mysql && \
-    chown -R mysql:mysql /var/lib/mysql
+    chown -R mysql:mysql /var/lib/mysql && \
+    chown -R mysql:mysql /etc/mysql
 
 # Expose le port MySQL
 EXPOSE 3306
