@@ -1,46 +1,414 @@
-version: '3.7'
+
+
+
+
+
+# version: '3.8'
+
+# services:
+#   mysql:
+#     image: mysql:latest
+#     restart: always
+#     environment:
+#       MYSQL_ROOT_PASSWORD: Pa$$w0rd
+#       MYSQL_DATABASE: wordpress
+#       MYSQL_USER: wp_user
+#       MYSQL_PASSWORD: w0rdpr3$$
+#     volumes:
+#       - ./config/mysql/my.cnf:/etc/mysql/my.cnf
+#       - mysql_data:/var/lib/mysql
+#     networks:
+#       - wp_network
+
+#   wordpress:
+#     image: wordpress:latest
+#     restart: always
+#     depends_on:
+#       - mysql
+#     environment:
+#       WORDPRESS_DB_HOST: mysql:3306
+#       WORDPRESS_DB_USER: wp_user
+#       WORDPRESS_DB_PASSWORD: w0rdpr3$$
+#       WORDPRESS_DB_NAME: wordpress
+#       WP_HOME: http://localhost:8080
+#       WP_SITEURL: http://localhost:8080
+#       WP_CONTENT_URL: http://localhost:8080/wp-content
+#     volumes:
+#       - ./app/wordpress:/var/www/html
+#     networks:
+#       - wp_network
+
+#   nginx:
+#     container_name: nginx
+#     image: nginx:latest
+#     ports:
+#       - "8080:80"  # Map host port 8080 to container port 80
+#     volumes:
+#       - ./app/wordpress:/usr/share/nginx/html:ro  # Serve static files from WordPress
+#       - ./config/nginx/default.conf:/etc/nginx/conf.d/default.conf  # Custom NGINX configuration
+#     depends_on:
+#       - wordpress
+#     networks:
+#       - wp_network
+#     # Healthcheck to ensure NGINX is running
+#     healthcheck:
+#       test: ["CMD", "curl", "-f", "http://localhost/"]
+#       interval: 30s
+#       timeout: 10s
+#       retries: 5
+
+# networks:
+#   wp_network:
+#     driver: bridge
+
+# volumes:
+#   mysql_data:
+
+
+
+
+
+
+
+
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# version: '3.7'   -- V1
+
+# services:
+#   wordpress:
+#     image: wordpress:latest
+#     environment:
+#       WORDPRESS_DB_HOST: mysql:3306
+#       WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+#       WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+#       WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+#     volumes:
+#       - wordpress_data:/var/www/html
+#     depends_on:
+#       - mysql
+#     networks:
+#       - wp_network
+
+#   mysql:
+#     image: mysql:latest
+#     environment:
+#       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+#       MYSQL_DATABASE: ${WORDPRESS_DB_NAME}
+#       MYSQL_USER: ${WORDPRESS_DB_USER}
+#       MYSQL_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+#     volumes:
+#       - mysql_data:/var/lib/mysql
+#     networks:
+#       - wp_network
+
+#   nginx:
+#     image: nginx:latest
+#     ports:
+#       - "8080:80"
+#     volumes:
+#       - wordpress_data:/usr/share/nginx/html
+#       - ./config/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+#     depends_on:
+#       - wordpress
+#     networks:
+#       - wp_network
+
+# volumes:
+#   wordpress_data:
+#   mysql_data:
+
+# networks:
+#   wp_network:
+#     driver: bridge
+
+
+
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+# FICHIER: /c:/Users/pj08lbq/OneDrive - Education Vaud/ETML - CPNV 3e/_Informatique/Trimestre 1/ICT/Mod. i169 - Docker/docker-wp-project/docker-compose.yml
+
+# version: '3.8'  # Utilisez la dernière version pour de meilleures fonctionnalités -- V2
+
+# services:
+#   wordpress:
+#     container_name: wordpress
+#     build:
+#       context: .
+#       dockerfile: ./docker/wordpress/Dockerfile.wordpress  # Construire à partir de votre Dockerfile personnalisé
+#     environment:
+#       WORDPRESS_DB_HOST: mysql:3306
+#       WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
+#       WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+#       WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+#     volumes:
+#       - wordpress_data:/var/www/html
+#     depends_on:
+#       - mysql
+#     networks:
+#       - wp_network
+#     # Healthcheck pour WordPress afin de s'assurer qu'il fonctionne
+#     healthcheck:
+#       test: ["CMD", "curl", "-f", "http://localhost/wp-admin/install.php"]
+#       interval: 30s
+#       timeout: 10s
+#       retries: 5
+
+#   mysql:
+#     container_name: mysql
+#     image: mysql:latest
+#     environment:
+#       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+#       MYSQL_DATABASE: ${WORDPRESS_DB_NAME}
+#       MYSQL_USER: ${WORDPRESS_DB_USER}
+#       MYSQL_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+#     volumes:
+#       - mysql_data:/var/lib/mysql
+#     networks:
+#       - wp_network
+#     # Healthcheck pour s'assurer que MySQL est prêt avant que WordPress ne démarre
+#     healthcheck:
+#       test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+#       interval: 30s
+#       timeout: 10s
+#       retries: 5
+
+#   nginx:
+#     container_name: nginx
+#     image: nginx:latest
+#     ports:
+#       - "8080:80"  # Mapper le port hôte 8080 au port du conteneur 80
+#     volumes:
+#       - wordpress_data:/usr/share/nginx/html:ro  # Servir les fichiers statiques depuis WordPress
+#       - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf  # Custom NGINX configuration
+#       - ./config/nginx/default.conf:/etc/nginx/conf.d/default.conf # Configuration NGINX par défaut
+#     depends_on:
+#       - wordpress
+#     networks:
+#       - wp_network
+#     # Healthcheck pour s'assurer que NGINX fonctionne
+#     healthcheck:
+#       test: ["CMD", "curl", "-f", "http://localhost/"]
+#       interval: 30s
+#       timeout: 10s
+#       retries: 5
+
+# volumes:
+#   wordpress_data:
+#   mysql_data:
+
+# networks:
+#   wp_network:
+#     driver: bridge
+
+
+
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+# version: '3.8' -- V3
+
+# services:
+#   mysql:
+#     image: mysql:latest
+#     restart: always
+#     environment:
+#       MYSQL_ROOT_PASSWORD: Pa$$w0rd
+#       MYSQL_DATABASE: wordpress
+#       MYSQL_USER: wp_user
+#       MYSQL_PASSWORD: w0rdpr3$$
+#     volumes:
+#       - ./config/mysql/my.cnf:/etc/mysql/my.cnf
+#       - mysql_data:/var/lib/mysql
+#     networks:
+#       - wp_network
+
+#   wordpress:
+#     image: wordpress:latest
+#     restart: always
+#     depends_on:
+#       - mysql
+#     environment:
+#       WORDPRESS_DB_HOST: mysql:3306
+#       WORDPRESS_DB_USER: wp_user
+#       WORDPRESS_DB_PASSWORD: w0rdpr3$$
+#       WORDPRESS_DB_NAME: wordpress
+#       WP_HOME: http://localhost:8080
+#       WP_SITEURL: http://localhost:8080
+#       WP_CONTENT_URL: http://localhost:8080/wp-content
+#     volumes:
+#       - ./app/wordpress:/var/www/html
+#     networks:
+#       - wp_network
+
+#   nginx:
+#     container_name: nginx
+#     image: nginx:latest
+#     ports:
+#       - "8080:80"  # Map host port 8080 to container port 80
+#     volumes:
+#       - ./app/wordpress:/usr/share/nginx/html:ro  # Serve static files from WordPress
+#       - ./config/nginx/default.conf:/etc/nginx/conf.d/default.conf  # Custom NGINX configuration
+#     depends_on:
+#       - wordpress
+#     networks:
+#       - wp_network
+#     # Healthcheck to ensure NGINX is running
+#     healthcheck:
+#       test: ["CMD", "curl", "-f", "http://localhost/"]
+#       interval: 30s
+#       timeout: 10s
+#       retries: 5
+
+# networks:
+#   wp_network:
+#     driver: bridge
+
+# volumes:
+#   mysql_data:
+
+# --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+# N'UTILISE PAS LES DOCKERFILES
+
+# version: '3.8'
+# services:
+#   mysql:
+#     container_name: mysql
+#     image: mysql:latest
+#     restart: always
+#     environment:
+#       MYSQL_ROOT_PASSWORD: "Pa$$w0rd"
+#       MYSQL_DATABASE: "wordpress"
+#       MYSQL_USER: "wp_user"
+#       MYSQL_PASSWORD: "w0rdpr3$$"
+#     volumes:
+#       - ./config/mysql/my.cnf:/etc/mysql/my.cnf
+#       - mysql_data:/var/lib/mysql
+#     networks:
+#       - wp_network
+
+#   wordpress:
+#     container_name: wordpress
+#     image: wordpress:php8.2-fpm
+#     restart: always
+#     depends_on:
+#       - mysql
+#     environment:
+#       WORDPRESS_DB_HOST: "mysql:3306"
+#       WORDPRESS_DB_USER: "wp_user"
+#       WORDPRESS_DB_PASSWORD: "w0rdpr3$$"
+#       WORDPRESS_DB_NAME: "wordpress"
+#       WP_HOME: "http://localhost:8080"
+#       WP_SITEURL: "http://localhost:8080"
+#       WP_CONTENT_URL: "http://localhost:8080/wp-content"
+#     volumes:
+#       - ./app/wordpress:/var/www/html
+#     networks:
+#       - wp_network
+
+#   nginx:
+#     container_name: nginx
+#     image: nginx:latest
+#     ports:
+#       - "8080:80"
+#     volumes:
+#       - ./app/wordpress:/var/www/html:ro
+#       - ./config/nginx/nginx.conf:/etc/nginx/nginx.conf
+#     depends_on:
+#       - wordpress
+#     networks:
+#       - wp_network
+
+# networks:
+#   wp_network:
+#     driver: bridge
+
+# volumes:
+#   mysql_data:
+
+
+
+
+  # --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+version: '3.8'
 
 services:
+  # Service WordPress
   wordpress:
-    image: wordpress:latest
+    container_name: wordpress
+    build:
+      context: .
+      dockerfile: ./docker/wordpress/Dockerfile.wordpress  # Utilise le Dockerfile personnalisé pour WordPress
     environment:
       WORDPRESS_DB_HOST: mysql:3306
-      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}
-      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}
-      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}
+      WORDPRESS_DB_USER: ${WORDPRESS_DB_USER}  # Défini dans .env
+      WORDPRESS_DB_PASSWORD: ${WORDPRESS_DB_PASSWORD}  # Défini dans .env
+      WORDPRESS_DB_NAME: ${WORDPRESS_DB_NAME}  # Défini dans .env
     volumes:
-      - wordpress_data:/var/www/html
+      - ./app/wordpress:/var/www/html  # Montre les fichiers de WordPress
     depends_on:
-      - mysql
+      - mysql  # Assure que MySQL est opérationnel avant de démarrer WordPress
     networks:
       - wp_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/wp-admin/install.php"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
+  # Service MySQL
   mysql:
-    image: mysql:latest
+    container_name: mysql
+    build:
+      context: .
+      dockerfile: ./docker/mysql/Dockerfile.mysql  # Utilise le Dockerfile personnalisé pour MySQL
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${WORDPRESS_DB_NAME}
-      MYSQL_USER: ${WORDPRESS_DB_USER}
-      MYSQL_PASSWORD: ${WORDPRESS_DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}  # Défini dans .env
+      MYSQL_DATABASE: ${WORDPRESS_DB_NAME}  # Défini dans .env
+      MYSQL_USER: ${WORDPRESS_DB_USER}  # Défini dans .env
+      MYSQL_PASSWORD: ${WORDPRESS_DB_PASSWORD}  # Défini dans .env
     volumes:
-      - mysql_data:/var/lib/mysql
+      - mysql_data:/var/lib/mysql  # Sauvegarde des données MySQL
+      - ./config/mysql/my.cnf:/etc/mysql/my.cnf  # Configuration personnalisée de MySQL
     networks:
       - wp_network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
+  # Service NGINX
   nginx:
-    image: nginx:latest
+    container_name: nginx
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile.nginx  # Utilise le Dockerfile personnalisé pour NGINX
     ports:
-      - "80:80"
+      - "8080:80"  # Expose le port 8080 pour accéder au site
     volumes:
-      - wordpress_data:/usr/share/nginx/html
+      - ./app/wordpress:/var/www/html:ro  # Rend les fichiers WordPress accessibles en lecture seule
+      - ./app/nginx/default.conf:/etc/nginx/conf.d/default.conf  # Configuration NGINX
     depends_on:
       - wordpress
     networks:
       - wp_network
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 30s
+      timeout: 10s
+      retries: 5
 
+# Volume pour persister les données de MySQL
 volumes:
-  wordpress_data:
   mysql_data:
 
+# Réseau partagé entre les services
 networks:
   wp_network:
+    driver: bridge
+
+
